@@ -5,6 +5,8 @@ Authentication & Authorization (/api/auth)
 2) POST /api/auth/login (Login a user, returns a JWT)
 3) GET /api/auth/me (Get the currently authenticated user's details)
 
+
+// PASSWORD HASHING BRO
 */
 const User = require("../models/UserModel");
 const jwt = require("jsonwebtoken");

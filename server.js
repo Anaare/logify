@@ -1,21 +1,31 @@
-require("dotenv").config({ path: "./config.env" });
-const app = require("./app");
 const mongoose = require("mongoose");
 
-const connectDB = async () => {
-  try {
-    await mongoose.connect(process.env.DATABASE);
-    console.log("MongoDB connected successfully!");
-  } catch (error) {
-    console.error("MongoDB connection error:", error);
-    process.exit(1);
-  }
-};
+const dotenv = require("dotenv");
 
-connectDB();
+process.on("uncaughtException", (err) => {
+  console.log("Uncaught exception 💥 shutting down...");
+  console.log(err.name, err.message);
+  process.exit(1); // 1 stands for uncaught exception
+});
 
-const PORT = process.env.PORT || 3000;
+dotenv.config({ path: "./config.env" });
 
-app.listen(PORT, "127.0.0.1", () => {
-  console.log(`Server is listening on port: ${PORT}`);
+const app = require("./app");
+
+mongoose
+  .connect(process.env.DATABASE)
+  .then(() => console.log("DB connection successfull"));
+
+const port = process.env.PORT || 8000;
+
+const server = app.listen(port, () => {
+  console.log(`app running on port ${port}...`);
+});
+
+process.on("unhandledRejection", (err) => {
+  console.log("Unhandled rejection 💥 shutting down...");
+  console.log(err);
+  server.close(() => {
+    process.exit(1); // 1 stands for uncaught exception
+  });
 });
