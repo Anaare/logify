@@ -1,47 +1,55 @@
-## Step 1: Initialize a project
+## Step 1: Project Initialization
 
-### Goal: Create essential folder/file structure
+### Goal: Set up the essential folder and file structure.
 
 #### What I did:
 
-- Created essential files and folders
+- Created the following configuration files:
 
   - `config.env`: Stores environment variables and secrets.
   - `.gitignore`: Specifies which files and folders to exclude from version control.
+
+- Created the following folders for project organization:
+
   - `controllers/`: Contains the business logic for each route.
   - `routes/`: Defines the API endpoints and links them to controllers.
   - `models/`: Houses the database schemas and Mongoose models.
   - `utils/`: For general helper functions.
 
-- Set up the main application files
+- Created main application entry files:
 
   - `app.js`: Manages Express logic, middleware, and route mounting.
   - `server.js`: Handles server-side tasks like connecting to the database and starting the server.
 
 ## Step 2: Dependencies
 
-### Goal: Install essential packages for security, routing, and data management.
+### Goal: Install essential packages for routing, database management, and security.
 
 #### What I did:
 
-- express: The foundational web framework for building your Node.js API.
-- bcrypt: A library for hashing and salting passwords, a crucial step for user data security.
-- dotenv: Loads environment variables from a .env file, keeping your configuration separate from your code.
-- cors: Middleware to enable Cross-Origin Resource Sharing, allowing your front-end to communicate with the back-end.
-- jsonwebtoken: A library for creating and verifying JSON Web Tokens (JWTs), which are used for secure user authentication.
-- mongoose: An Object Data Modeling (ODM) library that provides a straightforward way to interact with your MongoDB database.
-- validator: Provides a set of middleware to validate and sanitize incoming data from requests.
+- Installed the following dependencies:
+  - express: Core web framework for Node.js.
+  - bcrypt: Hashing and salting passwords for user security.
+  - dotenv: Loads environment variables from .env.
+  - cors: Enables Cross-Origin Resource Sharing for frontend-backend communication.
+  - jsonwebtoken: Creates and verifies JSON Web Tokens (JWT) for authentication.
+  - mongoose: An Object Data Modeling (ODM) for working with MongoDB.
+  - validator: Validates and sanitizes incoming request data.
 
-## Step 3: Schemas and Models for Database
+## Step 3: Database Schemas & Models
 
-### Goal: Create necessary schemas for the database models
+### Goal: Define database structure with Mongoose schemas and models.
 
 #### What I did:
 
-- Implemented separate schemas for User, Project, and Task.
-- Created a Mongoose model for each schema.
-- Added validation for each field, including custom error messages.
-- Used a pre-save hook to automatically hash user passwords with bcryptjs before they are stored.
+- Created separate schemas for:
+
+  - User
+  - Project
+  - Task
+
+- Added validation rules and custom error messages.
+- Implemented pre-save middleware to automatically hash user passwords with bcryptjs.
 
 **Code Example (UserModel.js):**
 
@@ -87,3 +95,32 @@ const User = mongoose.model("User", userSchema);
 
 module.exports = User;
 ```
+
+## Step 4: Error Handling
+
+### Goal: Implement a centralized error-handling system for production.
+
+#### What I did:
+
+- Added a global error handler in app.js to override Express defaults.
+- Created errorController.js in controllers/ for handling Mongoose-related errors.
+- Built a reusable AppError class for custom errors.
+- Implemented a catchAsync utility to handle errors in async functions.
+
+## Step 5: Authentication & Authorization
+
+### Goal: Implement user authentication and authorization logic.
+
+#### What I did:
+
+- Planned routes for working with the User model:
+  - POST /api/auth/register → Register a new user.
+  - POST /api/auth/login → Authenticate a user and return a JWT.
+  - GET /api/auth/me → Retrieve currently authenticated user’s details.
+- Added environment variables:
+
+  - JWT_SECRET → Secret key for signing tokens.
+  - JWT_EXPIRES_IN → Expiration time for tokens.
+
+- Created helper functions and register controller.
+- Set up /register route.
